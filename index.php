@@ -1,33 +1,42 @@
 <?php
+$errOP="";
 $a=$_POST["a"];
 $b=$_POST["b"];
 
 $operazioni=isset($_POST["operazioni"]) ? $_POST["operazioni"] : "";
 if(empty($operazioni)){
-    echo("Errore, selezionare un'operazione");
+    $errOP="ERRORE! SELEZIONA UN'OPERAZIONE TRA (Somma, Differenza, Prodotto, Quoziente)";
 }
 
-if($operazioni="somma"){
+if($operazioni=="somma"){
     $risultato=$a+$b;
-}elseif($operazioni="differenza"){
+}elseif($operazioni=="differenza"){
     $risultato=$a-$b;
-}elseif($operazioni="prodotto"){
+}elseif($operazioni=="prodotto"){
     $risultato=$a*$b;
-}elseif($operazioni="quoziente"){
-    $risultato=$a/$b;
+}elseif($operazioni=="quoziente"){
+    if($b==0){
+        $errOP="ERRORE! IMPOSSIBILE DIVIDERE PER 0, INSERISCI VALORI VALIDI!";
+        $risultato="";
+    }
+    else{
+        $risultato=$a/$b;
+    }
+}else{
+    $risultato="";
 }
 
 
-$opzioni=isset($_POST["opzioni"]) ? $_POST["opzioni"] : "";
-if(empty($opzioni)){
-    echo("Errore, selezionare un'opzione");
-}
+$opzioni=isset($_POST["opzioni"]) ? $_POST["opzioni"] : array();
 
-if($opzioni="assoluto"){
+
+if(in_array("assoluto", $opzioni)){
     $risultato=abs($risultato);
-}elseif($opzioni="quadrato"){
+}
+if(in_array("quadrato", $opzioni)){
     $risultato=pow($risultato,2);
-}elseif($opzioni="duedecimali"){
+}
+if(in_array("duedecimali", $opzioni)){
     $risultato=number_format($risultato,2);
 }
 
@@ -65,22 +74,22 @@ if($opzioni="assoluto"){
             <fieldset>
                 <legend>Operazione</legend>
                 <div>
-                <input type="radio" id="som" name="operazioni[]" value="somma" />
-                <label for="sum">somma</label>
+                <input type="radio" id="som" name="operazioni" value="somma" />
+                <label for="som">somma</label>
                 </div>
 
                 <div>
-                <input type="radio" id="diff" name="operazioni[]" value="differenza" />
+                <input type="radio" id="diff" name="operazioni" value="differenza" />
                 <label for="diff">differenza</label>
                 </div>
 
                 <div>
-                <input type="radio" id="prod" name="operazioni[]" value="prodotto" />
-                <label for="prd">prodotto</label>
+                <input type="radio" id="prod" name="operazioni" value="prodotto" />
+                <label for="prod">prodotto</label>
                 </div>
 
                 <div>
-                <input type="radio" id="quoz" name="operazioni[]" value="quoziente" />
+                <input type="radio" id="quoz" name="operazioni" value="quoziente" />
                 <label for="quoz">quoziente</label>
                 </div>
             </fieldset> 
@@ -111,5 +120,8 @@ if($opzioni="assoluto"){
 </html>
 
 <?php 
-echo($risultato)
+if(!empty($operazioni)){
+    echo($risultato);
+}
+echo($errOP)
 ?>
