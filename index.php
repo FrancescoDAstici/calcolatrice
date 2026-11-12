@@ -1,7 +1,15 @@
 <?php
 $errOP="";
-$a=$_POST["a"];
-$b=$_POST["b"];
+$errVAL="";
+$a=isset($_POST["a"]) ?  $_POST["a"] : "ERR";
+$b=isset($_POST["b"]) ?  $_POST["b"] : "ERR";
+
+if(empty($a)||!is_numeric($a)){
+    $errVAL="ERRORE! VERIFICA IL CORRETTO INSERIMENTO DEI VALORI!";
+}
+if(empty($b)||!is_numeric($b)){
+    $errVAL="ERRORE! VERIFICA IL CORRETTO INSERIMENTO DEI VALORI!";
+}
 
 $operazioni=isset($_POST["operazioni"]) ? $_POST["operazioni"] : "";
 if(empty($operazioni)){
@@ -123,5 +131,6 @@ if(in_array("duedecimali", $opzioni)){
 if(!empty($operazioni)){
     echo($risultato);
 }
+echo($errVAL);
 echo($errOP)
 ?>
